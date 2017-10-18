@@ -30,18 +30,19 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      businesses: []
+      businesses: [],
     };
-    this.searchYelp.bind(this);
+    this.searchYelp = this.searchYelp.bind(this);
   }
 
   searchYelp(term, location, sortBy){
     //term, location, sortBy
-    Yelp.search(term,location,sortBy).then( business => {
-        console.log('App Object:'+ business[0]);
+    Yelp.search(term,location,sortBy).then(businesses => {
+      console.log(businesses);
         this.setState({
-          businesses : business,
+          businesses : businesses,
         });
+        console.log(this.state.businesses);
     });
   }
 
