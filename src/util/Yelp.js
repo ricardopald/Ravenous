@@ -16,13 +16,10 @@ const Yelp = {
       return response.json();
     }).then(jsonResponse => {
       accessToken = jsonResponse.access_token;
-      console.log(accessToken);
     }))
   },
 
   search(term, location, sortBy){
-    console.log('Yelp:'+term+location+sortBy);
-    console.log(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}&sort_by=${sortBy}`);
     return (Yelp.getAccessToken().then(() =>{
       return fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}&sort_by=${sortBy}`,{
         headers: { Authorization: `Bearer ${accessToken}`}
@@ -30,14 +27,19 @@ const Yelp = {
     }).then(response => {
       return response.json();
     }).then(jsonResponse => {
-      if(jsonResponse.business){
-        return jsonResponse.map(business =>{
-            console.log('Object: '+business);
-            return ({
-              id: business.id,
-              imageSrc: business.image_url,
-            });
-        });
+      if(jsonResponse.businesses){
+        return jsonResponse.businesses.map(business => ({
+          id: business.id,
+          imageSrc: business.image_url,
+          name: business.name,
+          address: business.location.address1,
+          city: business.location.city,
+          state: business.location.state,
+          zipCode: business.location.zip_code,
+          category: business.categories[0].title,
+          rating: business.rating,
+          reviewCount: business.review_count
+        }));
       }
     }));
   }
