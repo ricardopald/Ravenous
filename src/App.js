@@ -42,7 +42,6 @@ class App extends Component {
         this.setState({
           businesses : businesses,
         });
-        console.log(this.state.businesses);
     });
   }
 
